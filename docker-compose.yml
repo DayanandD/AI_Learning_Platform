@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: ai-learning-postgres
+    environment:
+      POSTGRES_DB: ai_learning_db
+      POSTGRES_USER: ai_learning_user
+      POSTGRES_PASSWORD: ai_learning_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - ai-learning-network
+
+  app:
+    build: .
+    container_name: ai-learning-app
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ai_learning_db
+      SPRING_DATASOURCE_USERNAME: ai_learning_user
+      SPRING_DATASOURCE_PASSWORD: ai_learning_pass
+      JWT_SECRET: mySecretKey123456789012345678901234567890
+    ports:
+      - "8080:8080"
+    networks:
+      - ai-learning-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  ai-learning-network:
+    driver: bridge

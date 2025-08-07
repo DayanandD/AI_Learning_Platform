@@ -1,0 +1,43 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: ai-learning-platform
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ai_learning_db
+    username: ai_learning_user
+    password: Daya@2796
+    driver-class-name: org.postgresql.Driver
+    
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+# JWT Configuration (disabled for test)
+jwt:
+  secret: mySecretKey123456789012345678901234567890123456789012345678901234567890
+  expiration: 86400000
+  refresh-expiration: 604800000
+
+# Swagger Configuration
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+# Logging
+logging:
+  level:
+    com.ailearning: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate: DEBUG
